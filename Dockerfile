@@ -9,7 +9,8 @@ COPY package*.json ./
 RUN npm install
 
 # Copy the rest of the application files
-COPY . .
+COPY index.js ./
+COPY init.sh ./
 
 # Install other required packages
 RUN apt-get update && \
