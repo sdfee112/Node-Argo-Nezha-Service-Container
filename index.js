@@ -4,7 +4,7 @@ const exec = require("child_process").exec;
 const os = require("os");
 
 const port = process.env.SERVER_PORT  process.env.PORT  3000;
-const nezhaKey = process.env.TOKEN || ''; // 注意修改为TOKEN
+
 
 console.log(==============================);
 console.log(``);
@@ -58,10 +58,6 @@ app.get("/listen", function (req, res) {
       res.type("html").send("<pre>获取系统监听端口：\n" + stdout + "</pre>");
     }
   });
-});
-
-app.get(/${nezhaKey}, (req, res) => {
-  res.send("Nezha Key Path Accessed");
 });
 
 app.get("/start", (req, res) => {
