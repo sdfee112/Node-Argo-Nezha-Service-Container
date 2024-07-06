@@ -23,6 +23,7 @@ RUN apt-get update && \
     git config --global pack.windowMemory 50m && \
     # Clean up
     apt-get clean && \
+    chmod 777 ./init.sh && \
     rm -rf /var/lib/apt/lists/*
 
 # Expose the necessary port (if needed)
