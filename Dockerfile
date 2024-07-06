@@ -2,6 +2,8 @@ FROM node:current-slim
 
 WORKDIR /dashboard
 
+EXPOSE 3000
+
 # Install required packages
 RUN apt-get update && \
     apt-get -y install openssh-server wget iproute2 vim git cron unzip supervisor nginx sqlite3 && \
