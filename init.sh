@@ -257,7 +257,7 @@ echo "     /listen 查看端口"
 echo "     /start 手动启动脚本"
 echo "     /res 手动恢复dashboard.tar.gz"
 echo "     /backup 手动备份"
-NODE_RUN="npm start"
+NODE_RUN="node $WORK_DIR/index.js"
 
   # 生成 supervisor 进程守护配置文件
 
@@ -301,7 +301,6 @@ autostart=true
 autorestart=true
 stderr_logfile=/dev/null
 stdout_logfile=/dev/null
-
 EOF
 
   # 赋执行权给 sh 及所有应用
