@@ -6,7 +6,7 @@ WORKDIR /dashboard
 RUN apt-get update && \
     apt-get -y install openssh-server wget iproute2 vim git cron unzip supervisor nginx sqlite3 curl && \
     # Install Node.js from NodeSource
-    curl -fsSL https://deb.nodesource.com/setup_14.x | bash - && \
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs && \
     # Configure Git settings
     git config --global core.bigFileThreshold 1k && \
