@@ -1,20 +1,13 @@
-FROM node:current-slim
+FROM debian
 
 WORKDIR /dashboard
 
-# Copy package.json and package-lock.json (if available)
-COPY package*.json ./
-
-# Install Node.js dependencies
-RUN npm install
-
-# Copy the rest of the application files
-COPY index.js ./
-COPY init.sh ./
-
-# Install other required packages
+# Install required packages
 RUN apt-get update && \
     apt-get -y install openssh-server wget iproute2 vim git cron unzip supervisor nginx sqlite3 && \
+    # Install Node.js from NodeSource
+    curl -fsSL https://deb.nodesource.com/setup_14.x | bash - && \
+    apt-get install -y nodejs && \
     # Configure Git settings
     git config --global core.bigFileThreshold 1k && \
     git config --global core.compression 0 && \
@@ -23,11 +16,11 @@ RUN apt-get update && \
     git config --global pack.windowMemory 50m && \
     # Clean up
     apt-get clean && \
-    chmod 777 ./init.sh && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    # Create entrypoint script
+    echo "#!/usr/bin/env bash\n\n\
+bash <(wget -qO- https://raw.githubusercontent.com/fscarmen2/Argo-Nezha-Service-Container/main/init.sh)" > entrypoint.sh && \
+    chmod +x entrypoint.sh
 
-# Expose the necessary port (if needed)
-EXPOSE 3000
-
-# Set the entrypoint to start the index.js file
-CMD ["node", "index.js"]
+# Set the entrypoint
+ENTRYPOINT ["./entrypoint.sh"]
