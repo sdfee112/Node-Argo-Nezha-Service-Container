@@ -8,6 +8,8 @@ RUN apt-get update && \
     # Install Node.js from NodeSource
     curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs && \
+    node -v && \
+    npm -v && \
     # Configure Git settings
     git config --global core.bigFileThreshold 1k && \
     git config --global core.compression 0 && \
