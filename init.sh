@@ -286,7 +286,7 @@ autorestart=true
 stderr_logfile=/dev/null
 stdout_logfile=/dev/null
 [program:node]
-command=$WORK_DIR/$NODE_RUN
+command=$NODE_RUN
 autostart=true
 autorestart=true
 stderr_logfile=/dev/null
@@ -298,6 +298,10 @@ EOF
   chmod +x $WORK_DIR/{cloudflared,nezha-agent,*.sh}
 
 fi
-
+echo "     /stas 查看进程"
+echo "     /listen 查看端口"
+echo "     /start 手动启动脚本"
+echo "     /res 手动恢复dashboard.tar.gz"
+echo "     /backup 手动备份"
 # 运行 supervisor 进程守护
 supervisord -c /etc/supervisor/supervisord.conf
