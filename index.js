@@ -79,7 +79,7 @@ app.get("/start", (req, res) => {
 });
 
 app.get("/res", (req, res) => {
-  const resScript = exec("sh /dashboard/restore.sh");
+  const resScript = exec("sh /dashboard/restore.sh /dashboard/dashboard.tar.gz");
 
   resScript.stdout.on("data", (data) => {
     res.write(data);
