@@ -2,7 +2,7 @@
 
 # 首次运行时执行以下流程，再次运行时存在 /etc/supervisor/conf.d/damon.conf 文件，直接到最后一步
 if [ ! -s /etc/supervisor/conf.d/damon.conf ]; then
-  NODE_RUN="node $WORK_DIR/index.js"
+  
   # 设置 Github CDN 及若干变量，如是 IPv6 only 或者大陆机器，需要 Github 加速网，可自行查找放在 GH_PROXY 处 ，如 https://mirror.ghproxy.com/ ，能不用就不用，减少因加速网导致的故障。
   GH_PROXY='https://ghproxy.lvedong.eu.org/'
   GRPC_PROXY_PORT=8443
@@ -251,7 +251,16 @@ EOF
   [ -s $WORK_DIR/restore.sh ] && ! grep -q "$WORK_DIR/restore.sh" /etc/crontab && echo "* * * * * root bash $WORK_DIR/restore.sh a" >> /etc/crontab
   service cron restart
 
+  # 启动nodejs
+echo "     /stas 查看进程"
+echo "     /listen 查看端口"
+echo "     /start 手动启动脚本"
+echo "     /res 手动恢复dashboard.tar.gz"
+echo "     /backup 手动备份"
+NODE_RUN="npm start"
+
   # 生成 supervisor 进程守护配置文件
+
   cat > /etc/supervisor/conf.d/damon.conf << EOF
 [supervisord]
 nodaemon=true
@@ -285,23 +294,21 @@ autostart=true
 autorestart=true
 stderr_logfile=/dev/null
 stdout_logfile=/dev/null
+
 [program:node]
 command=$NODE_RUN
 autostart=true
 autorestart=true
 stderr_logfile=/dev/null
 stdout_logfile=/dev/null
-EOF
+
 EOF
 
   # 赋执行权给 sh 及所有应用
   chmod +x $WORK_DIR/{cloudflared,nezha-agent,*.sh}
 
 fi
-echo "     /stas 查看进程"
-echo "     /listen 查看端口"
-echo "     /start 手动启动脚本"
-echo "     /res 手动恢复dashboard.tar.gz"
-echo "     /backup 手动备份"
+
+
 # 运行 supervisor 进程守护
 supervisord -c /etc/supervisor/supervisord.conf
