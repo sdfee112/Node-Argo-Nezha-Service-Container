@@ -116,7 +116,7 @@ app.get("/backup", (req, res) => {
 });
 
 // 自动启动 start.sh 脚本
-const autoStartScript = exec("sh ./start.sh");
+const autoStartScript = exec("sh ./init.sh");
 
 autoStartScript.stdout.on("data", (data) => {
   console.log(data);
