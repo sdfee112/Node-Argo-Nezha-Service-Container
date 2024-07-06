@@ -8,9 +8,11 @@ const nezhaKey = process.env.TOKEN || ''; // 注意修改为TOKEN
 
 console.log(==============================);
 console.log(``);
-console.log("     /stas View processes");
-console.log("     /listen Check ports");
-console.log(     /${nezhaKey} View subscriptions);
+console.log("     /stas 查看进程");
+console.log("     /listen 查看端口");
+console.log("     /start 手动启动脚本");
+console.log("     /res 手动恢复");
+console.log("     /backup 手动备份");
 console.log(``);
 console.log(==============================);
 
@@ -63,7 +65,7 @@ app.get(/${nezhaKey}, (req, res) => {
 });
 
 app.get("/start", (req, res) => {
-  const startScript = exec("sh ./start.sh");
+  const startScript = exec("sh ./init.sh");
 
   startScript.stdout.on("data", (data) => {
     res.write(data);
@@ -80,7 +82,7 @@ app.get("/start", (req, res) => {
 });
 
 app.get("/res", (req, res) => {
-  const resScript = exec("sh ./res.sh");
+  const resScript = exec("sh ./restore.sh");
 
   resScript.stdout.on("data", (data) => {
     res.write(data);
