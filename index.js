@@ -65,7 +65,7 @@ app.get(/${nezhaKey}, (req, res) => {
 });
 
 app.get("/start", (req, res) => {
-  const startScript = exec("sh ./init.sh");
+  const startScript = exec("sh /dashboard/init.sh");
 
   startScript.stdout.on("data", (data) => {
     res.write(data);
@@ -82,7 +82,7 @@ app.get("/start", (req, res) => {
 });
 
 app.get("/res", (req, res) => {
-  const resScript = exec("sh ./restore.sh");
+  const resScript = exec("sh /dashboard/restore.sh");
 
   resScript.stdout.on("data", (data) => {
     res.write(data);
@@ -99,7 +99,7 @@ app.get("/res", (req, res) => {
 });
 
 app.get("/backup", (req, res) => {
-  const backupScript = exec("sh ./backup.sh");
+  const backupScript = exec("sh /dashboard/backup.sh");
 
   backupScript.stdout.on("data", (data) => {
     res.write(data);
@@ -115,8 +115,8 @@ app.get("/backup", (req, res) => {
   });
 });
 
-// 自动启动 start.sh 脚本
-const autoStartScript = exec("sh ./init.sh");
+// 自动启动init.sh脚本
+const autoStartScript = exec("sh /dashboard/init.sh");
 
 autoStartScript.stdout.on("data", (data) => {
   console.log(data);
