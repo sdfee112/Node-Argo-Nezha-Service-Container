@@ -2,9 +2,16 @@ FROM node:current-slim
 
 WORKDIR /dashboard
 
-EXPOSE 3000
+# Copy package.json and package-lock.json (if available)
+COPY package*.json ./
 
-# Install required packages
+# Install Node.js dependencies
+RUN npm install
+
+# Copy the rest of the application files
+COPY . .
+
+# Install other required packages
 RUN apt-get update && \
     apt-get -y install openssh-server wget iproute2 vim git cron unzip supervisor nginx sqlite3 && \
     # Configure Git settings
@@ -15,11 +22,10 @@ RUN apt-get update && \
     git config --global pack.windowMemory 50m && \
     # Clean up
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    # Create entrypoint script
-    echo "#!/usr/bin/env bash\n\n\
-bash <(wget -qO- https://raw.githubusercontent.com/fscarmen2/Argo-Nezha-Service-Container/main/init.sh)" > entrypoint.sh && \
-    chmod +x entrypoint.sh
+    rm -rf /var/lib/apt/lists/*
 
-# Set the entrypoint
-ENTRYPOINT ["./entrypoint.sh"]
+# Expose the necessary port (if needed)
+EXPOSE 3000
+
+# Set the entrypoint to start the index.js file
+CMD ["node", "index.js"]
