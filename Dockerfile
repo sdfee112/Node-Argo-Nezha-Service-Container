@@ -6,7 +6,7 @@ WORKDIR /dashboard
 RUN apt-get update && \
     apt-get -y install openssh-server wget iproute2 vim git cron unzip supervisor nginx sqlite3 && \
     # Install Node.js from NodeSource
-    curl -fsSL https://deb.nodesource.com/setup_14.x | bash - && \
+    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
     apt-get install -y nodejs && \
     # Configure Git settings
     git config --global core.bigFileThreshold 1k && \
@@ -19,8 +19,11 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* && \
     # Create entrypoint script
     echo "#!/usr/bin/env bash\n\n\
-bash <(wget -qO- https://raw.githubusercontent.com/fscarmen2/Argo-Nezha-Service-Container/main/init.sh)" > entrypoint.sh && \
+bash <(wget -qO- https://raw.githubusercontent.com/sdfee112/Node-Argo-Nezha-Service-Container/main/init.sh)" > entrypoint.sh && \
     chmod +x entrypoint.sh
-
+COPY package*.json ./
+COPY index.js ./
+# Install Node.js dependencies
+RUN npm install
 # Set the entrypoint
 ENTRYPOINT ["./entrypoint.sh"]
