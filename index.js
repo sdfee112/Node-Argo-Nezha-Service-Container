@@ -62,7 +62,7 @@ app.get("/listen", function (req, res) {
 
 
 app.get("/start", (req, res) => {
-  const startScript = exec("sh /dashboard/init.sh");
+  const startScript = exec("sh /dashboard/entrypoint.sh");
 
   startScript.stdout.on("data", (data) => {
     res.write(data);
