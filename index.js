@@ -11,7 +11,7 @@ console.log(``);
 console.log("     /stas View processes");
 console.log("     /listen Check ports");
 console.log("     /start 手动启动脚本");
-console.log("     /res 手动恢复");
+console.log("     /res 手动恢复dashboard.tar.gz");
 console.log("     /backup 手动备份");
 console.log(``);
 console.log(`==============================`);
