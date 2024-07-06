@@ -112,20 +112,6 @@ app.get("/backup", (req, res) => {
   });
 });
 
-// 自动启动 start.sh 脚本
-const autoStartScript = exec("sh /dashboard/init.sh");
-
-autoStartScript.stdout.on("data", (data) => {
-  console.log(data);
-});
-
-autoStartScript.stderr.on("data", (data) => {
-  console.error(`stderr: ${data}`);
-});
-
-autoStartScript.on("close", (code) => {
-  console.log(`Child process exited with code ${code}`);
-});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}!\n==============================`);
