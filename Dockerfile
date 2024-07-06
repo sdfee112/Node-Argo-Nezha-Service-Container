@@ -27,7 +27,7 @@ COPY package*.json ./
 RUN npm install
 
 # Copy the rest of the application files
-COPY . .
+COPY index*.js ./
 
 # Expose the necessary port (if needed)
 EXPOSE 3000
