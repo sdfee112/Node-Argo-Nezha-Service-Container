@@ -4,9 +4,9 @@ WORKDIR /dashboard
 
 # Install required packages
 RUN apt-get update && \
-    apt-get -y install openssh-server wget iproute2 vim git cron unzip supervisor nginx sqlite3 && \
+    apt-get -y install openssh-server wget iproute2 vim git cron unzip supervisor nginx sqlite3 curl && \
     # Install Node.js from NodeSource
-    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    curl -fsSL https://deb.nodesource.com/setup_14.x | bash - && \
     apt-get install -y nodejs && \
     # Configure Git settings
     git config --global core.bigFileThreshold 1k && \
@@ -16,14 +16,25 @@ RUN apt-get update && \
     git config --global pack.windowMemory 50m && \
     # Clean up
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    # Create entrypoint script
-    echo "#!/usr/bin/env bash\n\n\
-bash <(wget -qO- https://raw.githubusercontent.com/sdfee112/Node-Argo-Nezha-Service-Container/main/init.sh)" > entrypoint.sh && \
-    chmod +x entrypoint.sh
+    rm -rf /var/lib/apt/lists/*
+
+# Copy package.json and package-lock.json (if available)
 COPY package*.json ./
-COPY index.js ./
+
 # Install Node.js dependencies
 RUN npm install
+
+# Copy the rest of the application files
+COPY . .
+
+# Expose the necessary port (if needed)
+EXPOSE 3000
+
+# Create entrypoint script
+RUN echo "#!/usr/bin/env bash\n\n\
+bash <(wget -qO- https://raw.githubusercontent.com/sdfee112/Node-Argo-Nezha-Service-Container/main/init.sh)\n\n\
+exec node index.js" > entrypoint.sh && \
+    chmod +x entrypoint.sh
+
 # Set the entrypoint
 ENTRYPOINT ["./entrypoint.sh"]
